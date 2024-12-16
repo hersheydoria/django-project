@@ -1,0 +1,6 @@
+<h2>User Dashboard</h2>
+<ul>
+  {% for msg in messages %}
+    <li>From: {{ msg.sender }} - {{ msg.content }} - {{ msg.timestamp }}</li>
+  {% endfor %}
+</ul>
