@@ -1,0 +1,24 @@
+<!-- messaging/templates/admin_app/dashboard.html -->
+
+<h2>Admin Dashboard</h2>
+
+<h3>Messages</h3>
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>
+                <strong>Sender:</strong> {{ message.sender.username }} <br>
+                <strong>Receiver:</strong> {{ message.receiver.username }} <br>
+                <strong>Message:</strong> {{ message.content }} <br>
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No messages available.</p>
+{% endif %}
+
+<!-- Button to Send Message without user_id -->
+<a href="{% url 'send_message' %}" class="btn btn-primary">Send a Message</a>
+
+<a href="{% url 'admin_logout' %}" class="btn btn-primary">Logout</a>

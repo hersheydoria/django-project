@@ -1,0 +1,14 @@
+<h2>User Dashboard</h2>
+
+<!-- Display Messages -->
+<ul>
+  {% csrf_token %}
+  {% for msg in messages %}
+    <li>From: {{ msg.sender }} - {{ msg.content }} - {{ msg.timestamp }}</li>
+  {% endfor %}
+</ul>
+
+<!-- Button to Send Message without user_id -->
+<a href="{% url 'send_message' %}" class="btn btn-primary">Send a Message</a>
+
+<a href="{% url 'user_logout' %}" class="btn btn-primary">Logout</a>

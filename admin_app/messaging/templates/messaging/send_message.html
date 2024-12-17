@@ -1,0 +1,12 @@
+<h2>Send Message</h2>
+
+<form method="POST" action="{% url 'send_message' %}">
+    {% csrf_token %}
+    <label for="receiver">Receiver Username:</label>
+    <input type="text" id="receiver" name="receiver" required><br>
+
+    <label for="content">Message:</label>
+    <textarea id="content" name="content" required></textarea><br>
+
+    <button type="submit">Send Message</button>
+</form>

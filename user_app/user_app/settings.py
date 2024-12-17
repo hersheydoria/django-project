@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'messaging.middlewares.EncryptionMiddleware',
 ]
 
 ROOT_URLCONF = 'user_app.urls'
@@ -71,11 +72,21 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 AUTH_USER_MODEL = 'messaging.CustomUser'
 
+import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Correctly encode the key
+FERNET_KEY = env("FERNET_KEY").encode()
+
+LOGIN_URL = 'user_login'
+LOGIN_REDIRECT_URL = 'user_dashboard'
+LOGOUT_REDIRECT_URL = 'user_login'
 
 WSGI_APPLICATION = 'user_app.wsgi.application'
 
@@ -119,11 +130,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
+USE_TZ = True
 
 USE_I18N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
