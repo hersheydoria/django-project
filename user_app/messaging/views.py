@@ -36,6 +36,18 @@ def user_logout(request):
     logout(request)
     return redirect('user_login')
 
+# User Dashboard View
+@login_required
+def user_dashboard(request):
+    users = User.objects.exclude(id=request.user.id)
+    messages = Message.objects.filter(receiver=request.user)
+
+    # Decrypt the message content before displaying it
+    for message in messages:
+        message.content = message.get_decrypted_content()
+
+    return render(request, "messaging/dashboard.html", {"users": users, "messages": messages})
+
 # Send Message View (User)
 @login_required
 def send_message(request):
@@ -56,3 +68,29 @@ def send_message(request):
 
     return render(request, 'messaging/send_message.html')
 
+# Secure API Endpoint for Sending Messages (User)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from .serializers import MessageSerializer
+
+class SendMessageView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        serializer = MessageSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(sender=request.user)
+            return Response({'message': 'Message sent securely'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Secure API Endpoint for Receiving Messages (User)
+class ReceiveMessageView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        messages = Message.objects.filter(receiver=request.user)
+        serializer = MessageSerializer(messages, many=True)
+        return Response(serializer.data)
