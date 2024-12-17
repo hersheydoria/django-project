@@ -1,0 +1,27 @@
+<h2>Send a Message to {{ receiver.username }}</h2>
+
+<!-- Display Previous Messages -->
+<h3>Conversation</h3>
+<ul>
+  {% for msg in messages %}
+    <li>
+      <strong>{{ msg.sender.username }}:</strong> {{ msg.content }} <br>
+      <small>{{ msg.timestamp }}</small>
+    </li>
+  {% empty %}
+    <li>No messages yet. Start the conversation!</li>
+  {% endfor %}
+</ul>
+
+<!-- Send New Message -->
+<form method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="content">New Message:</label>
+    <textarea class="form-control" id="content" name="content" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+
+<!-- Button to Return to Dashboard -->
+<a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>

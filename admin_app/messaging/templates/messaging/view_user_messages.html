@@ -1,0 +1,18 @@
+<h2>Messages for {{ user.username }}</h2>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>
+                <strong>Sender:</strong> {{ message.sender.username }} <br>
+                <strong>Receiver:</strong> {{ message.receiver.username }} <br>
+                <strong>Message:</strong> {{ message.content }} <br>
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No messages found for this user.</p>
+{% endif %}
+
+<a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>

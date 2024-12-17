@@ -1,14 +1,38 @@
 <h2>User Dashboard</h2>
 
-<!-- Display Messages -->
+<!-- Display Users the Logged-in User Has Communicated With -->
+<h3>Users You've Communicated With</h3>
 <ul>
-  {% csrf_token %}
-  {% for msg in messages %}
-    <li>From: {{ msg.sender }} - {{ msg.content }} - {{ msg.timestamp }}</li>
+  <p>Want to start a message? <a href="{% url 'send_message' %}" class="btn btn-primary">Send a Message</a></p>
+  {% for user in users %}
+    <li>
+      {{ user.username }} 
+      <!-- Button to Send Message to this User -->
+      <a href="{% url 'send_message_with_user' user.id %}" class="btn btn-primary">Send Message</a>
+    </li>
+  {% empty %}
+    <li>No users to display. Start a conversation!</li>
   {% endfor %}
 </ul>
 
-<!-- Button to Send Message without user_id -->
-<a href="{% url 'send_message' %}" class="btn btn-primary">Send a Message</a>
+<!-- Profile Section -->
+<h3>Your Profile</h3>
+<form method="POST" action="{% url 'edit_profile' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+  </div>
+  <div class="form-group">
+    <label for="password">New Password (Leave empty to keep current):</label>
+    <input type="password" class="form-control" id="password" name="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Update Profile</button>
+</form>
 
+<!-- Logout Button -->
 <a href="{% url 'user_logout' %}" class="btn btn-primary">Logout</a>
