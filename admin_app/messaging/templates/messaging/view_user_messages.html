@@ -1,18 +1,173 @@
-<h2>Messages for {{ user.username }}</h2>
+{% load static %}
 
-{% if messages %}
-    <ul>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Messages</title>
+    <style>
+      /* General styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(#fda65d, #ffd07f, #e26a2c);
+        background-size: cover;
+        height: 100vh;
+        color: #333;
+      }
+
+      /* Navbar styling */
+      nav {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #e26a2c;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav .logo {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-image {
+        width: 40px;
+        height: 40px;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+      }
+
+      nav ul li {
+        display: inline;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #e26a2c;
+        font-size: 1em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background-color: #ffd07f;
+        color: #333;
+      }
+
+      h2 {
+        color: #e26a2c;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Messages list */
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li h4 {
+        margin: 10px auto;
+        background-color: #f1f1f1;
+        max-width: 60%;
+        border-radius: 5px;
+        padding: 10px;
+
+        strong {
+        color: #e26a2c;
+      }
+
+      /* No messages found */
+      .no-messages {
+        text-align: center;
+        color: #888;
+        font-size: 1.1em;
+      }
+
+      /* Back button */
+      .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+        text-align: center;
+        color: white;
+        background-color: #e26a2c;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: background 0.3s ease;
+        margin-top: 20px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn:hover {
+        background-color: #d45b1f;
+      }
+
+      /* Responsive styling */
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        nav ul li {
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">
+        <img src="{% static 'chat.png' %}" alt="Logo" class="logo-image" />
+        ChatHive
+      </div>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'view_user_messages' user.id %}">Inbox</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="{% url 'admin_logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <h2>Messages for {{ user.username }}</h2>
+
+      {% if messages %}
+      <ul>
         {% for message in messages %}
-            <li>
-                <strong>Sender:</strong> {{ message.sender.username }} <br>
-                <strong>Receiver:</strong> {{ message.receiver.username }} <br>
-                <strong>Message:</strong> {{ message.content }} <br>
-                <hr>
-            </li>
+        <li>
+          <h4>
+            <strong>Sender:</strong> {{ message.sender.username }} <br />
+            <strong>Receiver:</strong> {{ message.receiver.username }} <br />
+            <strong>Message:</strong> {{ message.content }}
+          </h4>
+        </li>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>No messages found for this user.</p>
-{% endif %}
-
-<a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+      </ul>
+      {% else %}
+      <p class="no-messages">No messages found for this user.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

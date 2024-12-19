@@ -13,3 +13,4 @@ urlpatterns = [
     path('api/messages/', MessageListView.as_view(), name='message_list'),
 ]
 
+

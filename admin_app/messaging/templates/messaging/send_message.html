@@ -1,19 +1,241 @@
-<h2>Send Message</h2>
+{% load static %}
 
-{% if error %}
-    <p class="text-danger">{{ error }}</p>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send Message</title>
+    <style>
+      /* General styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(#fda65d, #ffd07f, #e26a2c);
+        background-size: cover;
+        height: 100vh;
+        color: #333;
+      }
 
-<form method="post">
-    {% csrf_token %}
-    {% if receiver %}
+      /* Navbar styling */
+      nav {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #e26a2c;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav .logo {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+      }
+
+      nav ul li {
+        display: inline;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #e26a2c;
+        font-size: 1em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background-color: #ffd07f;
+        color: #333;
+      }
+
+      /* Main container */
+      .container {
+        padding: 20px;
+        max-width: 800px;
+        margin: 20px auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #e26a2c;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Chat Section */
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 300px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #fff9e6;
+        padding: 15px;
+        overflow-y: auto;
+      }
+
+      .message {
+        margin-bottom: 15px;
+      }
+
+      .message .sender {
+        font-weight: bold;
+        color: #e26a2c;
+      }
+
+      .message .content {
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 80%;
+        margin-top: 5px;
+      }
+
+      .message.sent .content {
+        background-color: #e26a2c;
+        color: white;
+        align-self: flex-end;
+      }
+
+      /* Input and send button */
+      .message-input {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        align-items: flex-start;
+      }
+
+      .message-input textarea {
+        flex-grow: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        resize: none;
+      }
+
+      .send-btn {
+        background-color: #e26a2c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background 0.3s ease;
+      }
+
+      .send-btn:hover {
+        background-color: #d45b1f;
+      }
+
+      .cancel-btn {
+        background-color: #ccc;
+        color: #333;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 1em;
+        transition: background 0.3s ease;
+      }
+
+      .cancel-btn:hover {
+        background-color: #bbb;
+      }
+
+      /* Error message styling */
+      .text-danger {
+        color: red;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-image {
+        width: 40px;
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">
+        <img src="{% static 'chat.png' %}" alt="Logo" class="logo-image" />
+        ChatHive
+      </div>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'view_user_messages' user.id %}">Inbox</a></li>
+        <li><a>Profile</a></li>
+        <li><a href="{% url 'admin_logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+      <h2>Send Message</h2>
+
+      <!-- Error Message -->
+      {% if error %}
+      <p class="text-danger">{{ error }}</p>
+      {% endif %}
+
+      <!-- Chat Container -->
+      <div class="chat-container">
+        {% if receiver %}
         <p><strong>Sending to:</strong> {{ receiver.username }}</p>
-    {% else %}
-        <label for="receiver">Receiver Username:</label>
-        <input type="text" name="receiver" id="receiver" required><br>
-    {% endif %}
-    <label for="content">Message:</label><br>
-    <textarea name="content" id="content" required></textarea><br>
-    <button type="submit" class="btn btn-success">Send</button>
-    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
-</form>
+        {% endif %}
+      </div>
+
+      <!-- Message Input -->
+      <form method="post">
+        {% csrf_token %}
+        <div class="message-input">
+          {% if not receiver %}
+          <input
+            type="text"
+            name="receiver"
+            id="receiver"
+            placeholder="Receiver Username"
+            required
+            style="
+              flex-grow: 1;
+              padding: 10px;
+              border-radius: 10px;
+              border: 1px solid #ddd;
+            "
+          />
+          {% endif %}
+          <textarea
+            name="content"
+            id="content"
+            rows="3"
+            placeholder="Type your message..."
+            required
+          ></textarea>
+          <button type="submit" class="send-btn">Send</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
