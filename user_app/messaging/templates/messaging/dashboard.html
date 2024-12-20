@@ -1,3 +1,4 @@
+{% load static %}
 <h2>User Dashboard</h2>
 
 <!-- Display Users the Logged-in User Has Communicated With -->
@@ -36,3 +37,7 @@
 
 <!-- Logout Button -->
 <a href="{% url 'user_logout' %}" class="btn btn-primary">Logout</a>
+
+<div class="image-overlay image-right" data-aos="fade-up-right">
+  <img src="{% static 'chat-2.png' %}" class="w-60 md:w-40" alt="Chat features" width="400" height="250" loading="lazy" decoding="async" style="border-radius: 12px; transform: translateX(60px);">
+</div>

@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from cryptography.fernet import InvalidToken
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()  # Use the custom user model
 
 def view_user_messages(request, user_id):
@@ -26,6 +27,9 @@ def view_user_messages(request, user_id):
 
     return render(request, 'messaging/view_user_messages.html', {'user': user, 'messages': messages})
 
+def home(request):
+    return render(request, 'messaging/home.html') 
+
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
@@ -34,6 +38,7 @@ def edit_user(request, user_id):
         user.save()
         return redirect('admin_dashboard')
     return render(request, 'admin_app/edit_user.html', {'user': user})
+
 
 def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -62,7 +67,7 @@ def admin_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('admin_dashboard')
+            return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'messaging/login.html', {'form': form})
