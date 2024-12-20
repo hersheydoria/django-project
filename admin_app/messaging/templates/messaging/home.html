@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Home</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    
+    <style>
+      /* General styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(#fda65d, #ffd07f, #e26a2c);
+        background-size: cover;
+        color: #333;
+      }
+
+      /* Navbar styling */
+      nav {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #e26a2c;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav .logo {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-image {
+        width: 40px;
+        height: 40px;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+      }
+
+      nav ul li {
+        display: inline;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: #e26a2c;
+        font-size: 1em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background-color: #ffd07f;
+        color: #333;
+      }
+
+      /* Main container styling */
+      .container {
+        padding: 5px;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative; /* Needed to position images on top */
+      }
+
+      h2 {
+        color: #e26a2c;
+        margin-bottom: 0px;
+        text-align: center;
+      }
+
+      h3 {
+        color: #000000;
+        margin-bottom: 0px;
+        font-size: 1.5em;
+      }
+
+      .row {
+        display: flex; /* Align items side by side */
+        justify-content: space-between; /* Ensure the content is evenly spaced */
+        align-items: center; /* Vertically align items */
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      }
+
+      .col-md-6 {
+        flex: 1;
+        padding: 0px;
+        text-align: center;
+      }
+
+      img {
+        max-width: 100%; /* Make image responsive */
+        height: auto; /* Maintain aspect ratio */
+      }
+
+      /* Absolute positioning for overlay images */
+      .image-overlay {
+        position: absolute;
+        z-index: 10;
+        border-radius: 12px;
+      }
+
+      .image-right {
+        top: 15%; /* Adjust as needed */
+        right: -5%;
+        transform: translateX(20px);
+      }
+
+      .image-left {
+        top: 35%; /* Adjust as needed */
+        left: -2%;
+        transform: translateX(-20px);
+      }
+
+      .col-md-6 {
+        position: relative;
+      }
+
+      /* Blurring the background */
+      .blurred-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('{% static "Chat-newest.png" %}') center/cover no-repeat;
+        filter: blur(10px);
+        z-index: -1;
+      }
+
+      nav ul li a.active {
+        background-color: #ffd07f; /* Highlighted background */
+        color: #333; /* Highlighted text color */
+        font-weight: bold; /* Emphasize active link */
+        border-radius: 5px; /* Rounded edges */
+        padding: 5px 10px; /* Adjust spacing */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .col-md-6 {
+          flex: 100%; /* Columns should take up full width on smaller screens */
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">
+        <img src="{% static 'chat.png' %}" alt="Logo" class="logo-image" />
+        ChatHive
+      </div>
+      <ul>
+        <li><a href="{% url 'home' %}" class="active">Home</a></li>
+        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'view_user_messages' user.id %}">Inbox</a></li>
+        <li><a>Profile</a></li>
+        <li><a href="{% url 'admin_logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+
+      <!-- Users Section -->
+      <h3 style="text-align: center; padding: 5px; background-color: #FFD07F; border-radius: 40px; font-size: 1.8em; font-weight: bold; color: #333; margin-bottom: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+        Welcome, <i><u>{{ user.username }}</u></i>
+      </h3>
+
+  <!-- Row for Text and Image -->
+  <div class="row">
+    <!-- Column 1: Text -->
+    <div class="col-md-6" style="margin-left: -50px;">
+        <div class="welcome-section" style="padding: 20px; border-radius: 10px; max-width: 800px; margin: 0px auto;">
+            <h2 style="text-align: center; color: #ee6c2c; margin-bottom: 10px;"><i>Chat. Connect. Thrive.</i></h2>
+            <p style="text-align: center; color: #333; font-size: 1.1em; margin-bottom: 30px;">
+              At ChatHive, your conversations take center stage. We provide a secure, distraction-free environment for meaningful text-based communication. 
+              With cutting-edge end-to-end encryption, your privacy is always our priority.
+            </p>
+            
+            <h3 style="color: #000000; margin-bottom: 8px;">Why ChatHive?</h3>
+            <ul style="list-style: none; padding: 0; color: #333; font-size: 1em; line-height: 1.6;">
+              <li style="margin-bottom: 8px;">
+                <span style="font-weight: bold; color: #000000;">🔒 Privacy First</span><br>
+                Your messages are protected with end-to-end encryption, ensuring only you and your recipient can read them.
+              </li>
+              <li style="margin-bottom: 8px;">
+                <span style="font-weight: bold; color: #000000;">✨ Distraction-Free Design</span><br>
+                No images, emojis, or clutter—just text-based messaging for clear, focused conversations.
+              </li>
+              <li style="margin-bottom: 8px;">
+                <span style="font-weight: bold; color: #000000;">⚡ Lightweight and Fast</span><br>
+                A streamlined app that delivers instant messaging without unnecessary features.
+              </li>
+              <li style="margin-bottom: 8px;">
+                <span style="font-weight: bold; color: #000000;">🛡️ Secure by Design</span><br>
+                We store no message content on our servers, giving you complete control over your data.
+              </li>
+            </ul>
+          </div>
+    </div>
+
+        <!-- Column 2: Image -->
+        <div class="col-md-6" style="position: relative;">
+            <!-- Blurred Background -->
+            <div class="blurred-background" style="transform: translateX(80px);"></div>
+            <div data-aos="fade-up-left" class="rounded-lg shadow aos-init aos-animate">
+                <img src="{% static 'Chat-newest.png' %}" class="img-fluid" alt="chathive-home-image" width="500" height="300" loading="lazy" decoding="async" style="border-radius: 8px; box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); transform: translateX(80px);">
+            </div>
+            
+            <!-- Overlay Images -->
+            <div class="image-overlay image-right" data-aos="fade-up-right">
+                <img src="{% static 'chat-2.png' %}" class="w-60 md:w-40" alt="Chat features" width="200" height="210" loading="lazy" decoding="async" style="border-radius: 12px; transform: translateX(60px);">
+            </div>
+            <div class="image-overlay image-left" data-aos="fade-up-left">
+                <img src="{% static 'chat-3.png' %}" class="w-46 md:w-56" alt="User messages features" width="200" height="200" loading="lazy" decoding="async" style="border-radius: 12px; transform: translateX(40px);">
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AOS Library Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init(); // Initialize the AOS library
+    </script>
+  </body>
+</html>

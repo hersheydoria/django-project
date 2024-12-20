@@ -9,6 +9,9 @@ from django.contrib.auth.forms import UserChangeForm
 
 User = get_user_model()  # Use the custom user model
 
+def home(request):
+    return render(request, 'messaging/home.html') 
+
 def edit_profile(request):
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=request.user)

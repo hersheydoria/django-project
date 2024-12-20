@@ -11,6 +11,7 @@ urlpatterns = [
     path('view_user_messages/<int:user_id>/', views.view_user_messages, name='view_user_messages'),
     path('send_message/<int:user_id>/', views.send_message, name='send_message'),
     path('api/messages/', MessageListView.as_view(), name='message_list'),
+     path('home/', views.home, name='home'),
 ]
 
 

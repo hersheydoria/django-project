@@ -121,6 +121,15 @@
         background-color: #d45b1f;
       }
 
+      nav ul li a.active {
+        background-color: #ffd07f; /* Highlighted background */
+        color: #333; /* Highlighted text color */
+        font-weight: bold; /* Emphasize active link */
+        border-radius: 5px; /* Rounded edges */
+        padding: 5px 10px; /* Adjust spacing */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+      }
+
       /* Responsive styling */
       @media (max-width: 768px) {
         nav ul {
@@ -132,6 +141,7 @@
           margin-bottom: 5px;
         }
       }
+    }
     </style>
   </head>
   <body>
@@ -143,8 +153,8 @@
       </div>
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-        <li><a href="{% url 'view_user_messages' user.id %}">Inbox</a></li>
+        <li><a href="{% url 'admin_dashboard' %}" >Dashboard</a></li>
+        <li><a href="{% url 'view_user_messages' user.id %}" class="active">Inbox</a></li>
         <li><a href="#">Profile</a></li>
         <li><a href="{% url 'admin_logout' %}">Logout</a></li>
       </ul>

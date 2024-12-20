@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',  # Set to your PostgreSQL host
         'PORT': '5432',  # Default PostgreSQL port
     }
@@ -119,7 +119,12 @@ USE_TZ = True
 USE_I18N = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Make sure this points to your static directory
+]
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
